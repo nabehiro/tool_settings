@@ -17,7 +17,7 @@
 # emacs の挙動と明らかに違う動きの部分は以下のとおりです。
 # ・左の Ctrlキー と Altキー のみが、emacs用のキーとして認識される。
 # ・ESC の二回押下で、ESC を入力できる。
-# ・C-o と C-\ で IME の切り替えが行われる。
+# ・C-\ で IME の切り替えが行われる。
 # ・C-c、C-z は、Windows の「コピー」、「取り消し」が機能するようにしている。
 # ・C-x C-y で、クリップボード履歴を表示する。（C-n で選択を移動し、Enter で確定する）
 # ・C-x o は、一つ前にフォーカスがあったウインドウに移動する。
@@ -171,6 +171,8 @@ def configure(keymap):
     def recenter():
         if keymap.getWindow().getClassName() == "EditorClient": # Sakura Editor
             keymap.command_InputKey("C-h")()
+        elif keymap.getWindow().getProcessName() == "chrome.exe": # Google Chrome
+            keymap.command_InputKey("C-l")()
 
     ########################################################################
     ## カット / コピー / 削除 / アンドゥ
@@ -263,6 +265,9 @@ def configure(keymap):
     ########################################################################
     ## 文字列検索 / 置換
     ########################################################################
+
+    def replace():
+        keymap.command_InputKey("C-h")()
 
     def isearch_backward():
         if keymap_emacs.is_searching:
@@ -494,7 +499,7 @@ def configure(keymap):
     keymap_emacs["(244)"]   = toggle_input_method
     keymap_emacs["LA-(25)"] = toggle_input_method
     keymap_emacs["LC-Yen"]  = toggle_input_method
-    keymap_emacs["LC-o"]    = toggle_input_method # or open_line
+    keymap_emacs["LC-o"]    = open_line
 
     keymap_im["(243)"]   = toggle_input_method
     keymap_im["(244)"]   = toggle_input_method
@@ -582,6 +587,7 @@ def configure(keymap):
     ## 「文字列検索 / 置換」のキー設定
     keymap_emacs["LC-r"] = reset_counter(reset_mark(isearch_backward))
     keymap_emacs["LC-s"] = reset_counter(reset_mark(isearch_forward))
+    keymap_emacs["LA-x"] = replace
 
     ## 「キーボードマクロ」のキー設定
     if 1:
