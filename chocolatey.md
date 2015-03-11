@@ -1,21 +1,22 @@
 # required
-qttabbar
-ConEmu
-git
-git.install
-grepwin
-poshgit
-SublimeText3
-SublimeText3.PowershellAlias
-winmerge
+- qttabbar
+- ConEmu
+- git
+- git.install
+- grepwin
+- poshgit
+- SublimeText3
+- SublimeText3.PowershellAlias
+- winmerge
+- sourcetree
 
 # optional
-curl
-microsoft-message-analyzer
-nodejs.install
-npm
-paint.net
-procexp
-ruby
-ruby2.devkit
-TortoiseGit
+- curl
+- microsoft-message-analyzer
+- nodejs.install
+- npm
+- paint.net
+- procexp
+- ruby
+- ruby2.devkit
+- TortoiseGit
