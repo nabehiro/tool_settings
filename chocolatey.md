@@ -20,3 +20,4 @@
 - ruby
 - ruby2.devkit
 - TortoiseGit
+- javaruntime-platformspecific (jre7)
