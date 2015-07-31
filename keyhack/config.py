@@ -582,6 +582,7 @@ def configure(keymap):
 
     ## 「バッファ / ウインドウ操作」のキー設定
     keymap_emacs["LC-x"]["k"] = reset_search(reset_counter(reset_mark(kill_buffer)))
+    keymap_emacs["LC-q"] = reset_search(reset_counter(reset_mark(kill_buffer)))
     keymap_emacs["LC-x"]["o"] = reset_search(reset_counter(reset_mark(other_window)))
 
     ## 「文字列検索 / 置換」のキー設定
