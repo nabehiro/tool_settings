@@ -569,7 +569,7 @@ def configure(keymap):
     keymap_emacs["LC-c"]          = reset_search(reset_counter(reset_mark(windows_copy)))
     keymap_emacs["LC-y"]          = reset_search(reset_counter(reset_mark(yank)))
     keymap_emacs["LC-z"]          = reset_search(reset_counter(reset_mark(undo)))
-    keymap_emacs["LC-Slash"]      = reset_search(reset_counter(reset_mark(undo)))
+    # keymap_emacs["LC-Slash"]      = reset_search(reset_counter(reset_mark(undo)))
     keymap_emacs["LC-Underscore"] = reset_search(reset_counter(reset_mark(undo)))
     keymap_emacs["LC-x"]["u"]     = reset_search(reset_counter(reset_mark(undo)))
 
