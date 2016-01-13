@@ -1,11 +1,23 @@
-﻿
-# Load posh-git example profile
-. 'C:\tools\posh-git\profile.example.ps1'
 
-# change prompt color
-function prompt
-{
-  Write-Host "@" -NoNewLine -ForegroundColor yellow
-  Write-Host "$(Convert-Path $(get-location))>" -nonewline -foregroundcolor blue
-  return ' '
+################################################################################
+# Reference to posh-git.example 'C:\tools\posh-git\profile.example.ps1'
+################################################################################
+
+# Load posh-git module from current directory
+Import-Module C:\tools\posh-git\posh-git
+
+# If module is installed in a default location ($env:PSModulePath),
+# use this instead (see about_Modules for more information):
+# Import-Module posh-git
+
+
+# Set up a simple prompt, adding the git prompt parts inside git repos
+function global:prompt {
+    Write-Host "@ " -NoNewLine -ForegroundColor darkred
+    Write-Host $pwd.ProviderPath.Replace($HOME, "~") -nonewline -foregroundcolor blue
+    Write-VcsStatus
+    Write-Host ">" -nonewline -foregroundcolor blue
+    return " "
 }
+
+Start-SshAgent -Quiet
