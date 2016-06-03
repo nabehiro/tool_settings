@@ -225,7 +225,10 @@ def configure(keymap):
         keymap.command_InputKey("C-c")()
 
     def yank():
-        keymap.command_InputKey("C-v")()
+        if keymap.getWindow().getProcessName() == "Evernote.exe":
+            keymap.command_InputKey("C-S-v")()
+        else:
+            keymap.command_InputKey("C-v")()
 
     def undo():
         keymap.command_InputKey("C-z")()
