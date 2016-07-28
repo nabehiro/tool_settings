@@ -16,7 +16,8 @@ function global:prompt {
     Write-Host "@ " -NoNewLine -ForegroundColor darkred
     Write-Host $pwd.ProviderPath.Replace($HOME, "~") -nonewline -foregroundcolor blue
     Write-VcsStatus
-    Write-Host ">" -nonewline -foregroundcolor blue
+    Write-Host ""
+    Write-Host ">" -NoNewLine -foregroundcolor blue
     return " "
 }
 
