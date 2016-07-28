@@ -577,7 +577,7 @@ def configure(keymap):
     keymap_emacs["LC-x"]["u"]     = reset_search(reset_counter(reset_mark(undo)))
 
     # LC-Atmark とすると英語キーボードで LC-2 が横取りされるので、LC-(192) としている
-    keymap_emacs["LC-(192)"] = reset_search(reset_counter(set_mark_command))
+    # keymap_emacs["LC-(192)"] = reset_search(reset_counter(set_mark_command))
     keymap_emacs["LC-Space"] = reset_search(reset_counter(set_mark_command))
 
     keymap_emacs["LC-x"]["h"]   = reset_search(reset_counter(reset_mark(mark_whole_buffer)))
