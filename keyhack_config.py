@@ -1,4 +1,4 @@
-# -*- mode: python; coding: utf-8-dos -*-
+﻿# -*- mode: python; coding: utf-8-dos -*-
 
 ##
 ## Windows の操作を emacs のキーバインドで行うための設定（keyhac版）
@@ -98,7 +98,7 @@ def configure(keymap):
     ########################################################################
 
     def toggle_input_method():
-        keymap.command_InputKey("A-(25)")()
+        keymap.InputKeyCommand("A-(25)")()
         if 1:
             if keymap_emacs.is_playing_kmacro == False:
                 sleep(0.05) # delay
@@ -117,83 +117,83 @@ def configure(keymap):
     ########################################################################
 
     def find_file():
-        keymap.command_InputKey("C-o")()
+        keymap.InputKeyCommand("C-o")()
 
     def save_buffer():
-        keymap.command_InputKey("C-s")()
+        keymap.InputKeyCommand("C-s")()
 
     def write_file():
-        keymap.command_InputKey("A-f", "A-a")()
+        keymap.InputKeyCommand("A-f", "A-a")()
 
     ########################################################################
     ## カーソル移動
     ########################################################################
 
     def backward_char():
-        keymap.command_InputKey("Left")()
+        keymap.InputKeyCommand("Left")()
 
     def forward_char():
-        keymap.command_InputKey("Right")()
+        keymap.InputKeyCommand("Right")()
 
     def backward_word():
-        keymap.command_InputKey("C-Left")()
+        keymap.InputKeyCommand("C-Left")()
 
     def forward_word():
-        keymap.command_InputKey("C-Right")()
+        keymap.InputKeyCommand("C-Right")()
 
     def previous_line():
-        keymap.command_InputKey("Up")()
+        keymap.InputKeyCommand("Up")()
 
     def next_line():
-        keymap.command_InputKey("Down")()
+        keymap.InputKeyCommand("Down")()
 
     def move_beginning_of_line():
-        keymap.command_InputKey("Home")()
+        keymap.InputKeyCommand("Home")()
 
     def move_end_of_line():
-        keymap.command_InputKey("End")()
+        keymap.InputKeyCommand("End")()
         if keymap.getWindow().getClassName() == "_WwG": # Microsoft Word
             if keymap_emacs.is_marked:
-                keymap.command_InputKey("Left")()
+                keymap.InputKeyCommand("Left")()
 
     def beginning_of_buffer():
-        keymap.command_InputKey("C-Home")()
+        keymap.InputKeyCommand("C-Home")()
 
     def end_of_buffer():
-        keymap.command_InputKey("C-End")()
+        keymap.InputKeyCommand("C-End")()
 
     def scroll_up():
-        keymap.command_InputKey("PageUp")()
+        keymap.InputKeyCommand("PageUp")()
 
     def scroll_down():
-        keymap.command_InputKey("PageDown")()
+        keymap.InputKeyCommand("PageDown")()
 
     def recenter():
         if keymap.getWindow().getClassName() == "EditorClient": # Sakura Editor
-            keymap.command_InputKey("C-h")()
+            keymap.InputKeyCommand("C-h")()
         elif keymap.getWindow().getProcessName() == "chrome.exe": # Google Chrome
-            keymap.command_InputKey("C-l")()
+            keymap.InputKeyCommand("C-l")()
 
     ########################################################################
     ## カット / コピー / 削除 / アンドゥ
     ########################################################################
 
     def delete_backward_char():
-        keymap.command_InputKey("Back")()
+        keymap.InputKeyCommand("Back")()
 
     def delete_char():
-        keymap.command_InputKey("Delete")()
+        keymap.InputKeyCommand("Delete")()
 
     def backward_kill_word():
-        keymap.command_InputKey("C-S-Left", "C-x")()
+        keymap.InputKeyCommand("C-S-Left", "C-x")()
 
     def kill_word():
-        keymap.command_InputKey("C-S-Right", "C-x")()
+        keymap.InputKeyCommand("C-S-Right", "C-x")()
 
     def kill_line():
         keymap_emacs.is_marked = True
         mark(move_end_of_line)()
-        keymap.command_InputKey("C-c", "Delete")()
+        keymap.InputKeyCommand("C-c", "Delete")()
 
     def kill_line2():
         if keymap_emacs.repeat_counter == 1:
@@ -212,26 +212,26 @@ def configure(keymap):
             kill_region()
 
     def kill_region():
-        keymap.command_InputKey("C-x")()
+        keymap.InputKeyCommand("C-x")()
 
     def kill_ring_save():
-        keymap.command_InputKey("C-c")()
+        keymap.InputKeyCommand("C-c")()
         if not keymap.getWindow().getClassName().startswith("EXCEL"): # Microsoft Excel 以外
             # 選択されているリージョンのハイライトを解除するために Esc を発行しているが、
             # アプリケーションソフトによっては効果なし
-            keymap.command_InputKey("Esc")()
+            keymap.InputKeyCommand("Esc")()
 
     def windows_copy():
-        keymap.command_InputKey("C-c")()
+        keymap.InputKeyCommand("C-c")()
 
     def yank():
         if keymap.getWindow().getProcessName() == "Evernote.exe":
-            keymap.command_InputKey("C-S-v")()
+            keymap.InputKeyCommand("C-S-v")()
         else:
-            keymap.command_InputKey("C-v")()
+            keymap.InputKeyCommand("C-v")()
 
     def undo():
-        keymap.command_InputKey("C-z")()
+        keymap.InputKeyCommand("C-z")()
 
     def set_mark_command():
         if keymap_emacs.is_marked:
@@ -242,60 +242,60 @@ def configure(keymap):
     def mark_whole_buffer():
         if keymap.getWindow().getClassName().startswith("EXCEL"): # Microsoft Excel
             # Excel のセルの中でも機能するようにする対策
-            keymap.command_InputKey("C-End", "C-S-Home")()
+            keymap.InputKeyCommand("C-End", "C-S-Home")()
         else:
-            keymap.command_InputKey("C-Home", "C-a")()
+            keymap.InputKeyCommand("C-Home", "C-a")()
 
     def mark_page():
         mark_whole_buffer()
 
     def open_line():
-        keymap.command_InputKey("Enter", "Up", "End")()
+        keymap.InputKeyCommand("Enter", "Up", "End")()
 
     ########################################################################
     ## バッファ / ウインドウ操作
     ########################################################################
 
     def kill_buffer():
-        keymap.command_InputKey("C-F4")()
+        keymap.InputKeyCommand("C-F4")()
 
     def other_window():
-        keymap.command_InputKey("D-Alt")()
-        keymap.command_InputKey("Tab")()
+        keymap.InputKeyCommand("D-Alt")()
+        keymap.InputKeyCommand("Tab")()
         sleep(0.01) # delay
-        keymap.command_InputKey("U-Alt")()
+        keymap.InputKeyCommand("U-Alt")()
 
     ########################################################################
     ## 文字列検索 / 置換
     ########################################################################
 
     def replace():
-        keymap.command_InputKey("C-h")()
+        keymap.InputKeyCommand("C-h")()
 
     def isearch_backward():
         if keymap_emacs.is_searching:
             if keymap.getWindow().getProcessName() == "EXCEL.EXE":  # Microsoft Excel
                 if keymap.getWindow().getClassName() == "EDTBX": # 検索ウィンドウ
-                    keymap.command_InputKey("A-S-f")()
+                    keymap.InputKeyCommand("A-S-f")()
                 else:
-                    keymap.command_InputKey("C-f")()
+                    keymap.InputKeyCommand("C-f")()
             else:
-                keymap.command_InputKey("S-F3")()
+                keymap.InputKeyCommand("S-F3")()
         else:
-            keymap.command_InputKey("C-f")()
+            keymap.InputKeyCommand("C-f")()
             keymap_emacs.is_searching = True
 
     def isearch_forward():
         if keymap_emacs.is_searching:
             if keymap.getWindow().getProcessName() == "EXCEL.EXE":  # Microsoft Excel
                 if keymap.getWindow().getClassName() == "EDTBX": # 検索ウィンドウ
-                    keymap.command_InputKey("A-f")()
+                    keymap.InputKeyCommand("A-f")()
                 else:
-                    keymap.command_InputKey("C-f")()
+                    keymap.InputKeyCommand("C-f")()
             else:
-                keymap.command_InputKey("F3")()
+                keymap.InputKeyCommand("F3")()
         else:
-            keymap.command_InputKey("C-f")()
+            keymap.InputKeyCommand("C-f")()
             keymap_emacs.is_searching = True
 
     ########################################################################
@@ -338,23 +338,23 @@ def configure(keymap):
     ########################################################################
 
     def newline():
-        keymap.command_InputKey("Enter")()
+        keymap.InputKeyCommand("Enter")()
 
     def newline_and_indent():
-        keymap.command_InputKey("Enter", "Tab")()
+        keymap.InputKeyCommand("Enter", "Tab")()
 
     def indent_for_tab_command():
-        keymap.command_InputKey("Tab")()
+        keymap.InputKeyCommand("Tab")()
 
     def keybord_quit():
         if not keymap.getWindow().getClassName().startswith("EXCEL"): # Microsoft Excel 以外
             # 選択されているリージョンのハイライトを解除するために Esc を発行しているが、
             # アプリケーションソフトによっては効果なし
-            keymap.command_InputKey("Esc")()
+            keymap.InputKeyCommand("Esc")()
         keymap.command_RecordStop()
 
     def kill_emacs():
-        keymap.command_InputKey("A-F4")()
+        keymap.InputKeyCommand("A-F4")()
 
     def universal_argument():
         if keymap_emacs.is_universal_argument == True:
@@ -382,14 +382,14 @@ def configure(keymap):
     ########################################################################
 
     def self_insert_command(key):
-        return keymap.command_InputKey(key)
+        return keymap.InputKeyCommand(key)
 
     def digit(number):
         def _digit():
             if keymap_emacs.is_universal_argument == True:
                 digit_argument(number)
             else:
-                reset_counter(reset_mark(repeat(keymap.command_InputKey(str(number)))))()
+                reset_counter(reset_mark(repeat(keymap.InputKeyCommand(str(number)))))()
         return _digit
 
     def digit2(number):
@@ -402,12 +402,12 @@ def configure(keymap):
         def _mark():
             if keymap_emacs.is_marked:
                 # D-Shift だと、M-< や M-> 押下時に、D-Shift が解除されてしまう。その対策。
-                keymap.command_InputKey("D-LShift")()
-                keymap.command_InputKey("D-RShift")()
+                keymap.InputKeyCommand("D-LShift")()
+                keymap.InputKeyCommand("D-RShift")()
             func()
             if keymap_emacs.is_marked:
-                keymap.command_InputKey("U-LShift")()
-                keymap.command_InputKey("U-RShift")()
+                keymap.InputKeyCommand("U-LShift")()
+                keymap.InputKeyCommand("U-RShift")()
         return _mark
 
     def reset_mark(func):
