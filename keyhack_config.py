@@ -125,6 +125,9 @@ def configure(keymap):
     def write_file():
         keymap.InputKeyCommand("A-f", "A-a")()
 
+    def new_buffer():
+        keymap.InputKeyCommand("C-n")()
+
     ########################################################################
     ## カーソル移動
     ########################################################################
@@ -514,6 +517,7 @@ def configure(keymap):
     keymap_emacs["LC-x"]["C-f"] = reset_search(reset_counter(reset_mark(find_file)))
     keymap_emacs["LC-x"]["C-s"] = reset_search(reset_counter(reset_mark(save_buffer)))
     keymap_emacs["LC-x"]["C-w"] = reset_search(reset_counter(reset_mark(write_file)))
+    keymap_emacs["LC-x"]["C-n"] = reset_search(reset_counter(reset_mark(new_buffer)))
 
     ## 「カーソル移動」のキー設定
     keymap_emacs["LC-b"] = reset_search(reset_counter(repeat(mark(backward_char))))
