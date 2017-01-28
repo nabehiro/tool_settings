@@ -3,8 +3,8 @@
 # Reference to posh-git.example 'C:\tools\posh-git\profile.example.ps1'
 ################################################################################
 
-# Load posh-git module from current directory
-Import-Module C:\tools\posh-git\posh-git
+# Load posh-git module 
+Import-Module posh-git
 
 # If module is installed in a default location ($env:PSModulePath),
 # use this instead (see about_Modules for more information):
