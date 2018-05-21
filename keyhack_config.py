@@ -1,4 +1,4 @@
-﻿# -*- mode: python; coding: utf-8-dos -*-
+# -*- mode: python; coding: utf-8-dos -*-
 
 ##
 ## Windows の操作を emacs のキーバインドで行うための設定（keyhac版）
@@ -504,13 +504,13 @@ def configure(keymap):
     keymap_emacs["(243)"]   = toggle_input_method
     keymap_emacs["(244)"]   = toggle_input_method
     keymap_emacs["LA-(25)"] = toggle_input_method
-    keymap_emacs["LC-Yen"]  = toggle_input_method
+    # keymap_emacs["LC-Yen"]  = toggle_input_method
     keymap_emacs["LC-o"]    = open_line
 
     keymap_im["(243)"]   = toggle_input_method
     keymap_im["(244)"]   = toggle_input_method
     keymap_im["LA-(25)"] = toggle_input_method
-    keymap_im["LC-Yen"]  = toggle_input_method
+    # keymap_im["LC-Yen"]  = toggle_input_method
     keymap_im["LC-o"]    = toggle_input_method
 
     ## 「ファイル操作」のキー設定
@@ -626,12 +626,12 @@ def configure(keymap):
         keymap_excel["LC-Enter"] = reset_search(reset_counter(reset_mark(self_insert_command("F2"))))
 
     ## Emacs のキー設定（オプション）
-    if 0:
-        keymap_real_emacs = keymap.defineWindowKeymap(class_name='Emacs')
-        # IME 切り替え用のキーを C-\ に置き換える
-        keymap_real_emacs["(28)"]    = self_insert_command("C-Yen") # 「変換」キー
-        keymap_real_emacs["(29)"]    = self_insert_command("C-Yen") # 「無変換」キー
-        keymap_real_emacs["(242)"]   = self_insert_command("C-Yen") # 「カタカナ・ひらがな」キー
-        keymap_real_emacs["(243)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
-        keymap_real_emacs["(244)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
-        keymap_real_emacs["LA-(25)"] = self_insert_command("C-Yen") # 「Alt-`」 キー
+    # if 0:
+    #     keymap_real_emacs = keymap.defineWindowKeymap(class_name='Emacs')
+    #     # IME 切り替え用のキーを C-\ に置き換える
+    #     keymap_real_emacs["(28)"]    = self_insert_command("C-Yen") # 「変換」キー
+    #     keymap_real_emacs["(29)"]    = self_insert_command("C-Yen") # 「無変換」キー
+    #     keymap_real_emacs["(242)"]   = self_insert_command("C-Yen") # 「カタカナ・ひらがな」キー
+    #     keymap_real_emacs["(243)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
+    #     keymap_real_emacs["(244)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
+    #     keymap_real_emacs["LA-(25)"] = self_insert_command("C-Yen") # 「Alt-`」 キー
