@@ -9,8 +9,8 @@
 - ChgKey (キーバインド)
 - procexp
 - node.js
+- anaconda
 - git
-- SourceTree
 - Visual Studio
 - Visual Studio Code
-
+- mouse without borders
