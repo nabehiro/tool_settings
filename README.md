@@ -1,5 +1,5 @@
 # tool settings
-
+- 7zip
 - ConEmu
 - posh-git
 - WinMerge
