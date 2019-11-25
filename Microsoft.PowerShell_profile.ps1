@@ -12,3 +12,9 @@ function prompt {
     # Have posh-git display its default prompt
     & $GitPromptScriptBlock
 }
+
+function JoinFile($filter = "*.*") {
+    $text = (Get-ChildItem -Recurse -File -Filter $filter | Get-Content -Encoding UTF8) -join "`n";
+    Set-Clipboard $text
+    # Add-Content "out.sql" -Encoding UTF8
+}
