@@ -1,4 +1,5 @@
 # tool settings
+- Listary
 - 7zip
 - ~~ConEmu~~
 - terminal
