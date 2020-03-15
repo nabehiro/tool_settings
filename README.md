@@ -1,12 +1,14 @@
 # tool settings
 - 7zip
-- ConEmu
+- ~~ConEmu~~
+- terminal
 - posh-git
 - WinMerge
 - GrepWin
 - keyhac
-- Contexter (コンテキストメニュー)
-- ChgKey (キーバインド)
+- ~~Contexter (コンテキストメニュー)~~ 
+- ~~ChgKey (キーバインド)~~
+- SharpKeys
 - procexp
 - node.js
 - anaconda
