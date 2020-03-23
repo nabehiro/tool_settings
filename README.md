@@ -17,3 +17,4 @@
 - Visual Studio
 - Visual Studio Code
 - mouse without borders
+- Rufus
