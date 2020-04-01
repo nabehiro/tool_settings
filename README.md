@@ -1,4 +1,5 @@
 # tool settings
+- Listary
 - 7zip
 - ~~ConEmu~~
 - terminal
@@ -16,3 +17,4 @@
 - Visual Studio
 - Visual Studio Code
 - mouse without borders
+- Rufus
