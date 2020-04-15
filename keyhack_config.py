@@ -459,13 +459,13 @@ def configure(keymap):
     keymap_emacs["LC-q"]           = keymap.defineMultiStrokeKeymap("C-q")
 
     ## 0-9キーの設定
-    for key in range(10):
-        keymap_emacs[        str(key)]           = digit(key)
-        keymap_emacs["LC-" + str(key)]           = digit2(key)
-        keymap_emacs["LA-" + str(key)]           = digit2(key)
-        keymap_emacs["Esc"][ str(key)]           = digit2(key)
-        keymap_emacs["LC-OpenBracket"][str(key)] = digit2(key)
-        keymap_emacs["S-" + str(key)] = reset_counter(reset_mark(repeat(self_insert_command("S-" + str(key)))))
+    ## for key in range(10):
+    ##     keymap_emacs[        str(key)]           = digit(key)
+    ##     keymap_emacs["LC-" + str(key)]           = digit2(key)
+    ##     keymap_emacs["LA-" + str(key)]           = digit2(key)
+    ##     keymap_emacs["Esc"][ str(key)]           = digit2(key)
+    ##     keymap_emacs["LC-OpenBracket"][str(key)] = digit2(key)
+    ##     keymap_emacs["S-" + str(key)] = reset_counter(reset_mark(repeat(self_insert_command("S-" + str(key)))))
 
     ## SPACE, A-Zキーの設定
     for vkey in [32] + list(range(65, 90 + 1)):
