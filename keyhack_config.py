@@ -4,27 +4,16 @@
 ## Windows の操作を emacs のキーバインドで行うための設定（keyhac版）
 ##
 
-# このスクリプトは、keyhac で動作します。
-#   https://sites.google.com/site/craftware/keyhac
-# スクリプトですので、使いやすいようにカスタマイズしてご利用ください。
-#
-# この内容は、utf-8-dos の coding-system で config.py の名前でセーブして
-# 利用してください。また、このスクリプトの最後の方にキーボードマクロの
-# キーバインドの設定があります。英語キーボードと日本語キーボードで設定の
-# 内容を変える必要があるので、利用しているキーボードに応じて if文 の設定を
-# 変更してください。（現在の設定は、日本語キーボードとなっています。）
 #
 # emacs の挙動と明らかに違う動きの部分は以下のとおりです。
 # ・左の Ctrlキー と Altキー のみが、emacs用のキーとして認識される。
 # ・ESC の二回押下で、ESC を入力できる。
-# ・C-\ で IME の切り替えが行われる。
 # ・C-c、C-z は、Windows の「コピー」、「取り消し」が機能するようにしている。
 # ・C-x C-y で、クリップボード履歴を表示する。（C-n で選択を移動し、Enter で確定する）
 # ・C-x o は、一つ前にフォーカスがあったウインドウに移動する。
 #   NTEmacs から Windowsアプリケーションソフトを起動した際に戻るのに便利。
 # ・C-k を連続して実行しても、クリップボードへの削除文字列の蓄積は行われない。
 #   C-u による行数指定をすると、削除行を一括してクリップボードに入れることができる。
-# ・C-l は、アプリケーションソフト個別対応とする。recenter 関数で個別に指定すること。
 #   この設定では、Sakura Editor のみ対応している。
 # ・キーボードマクロは emacs の挙動と異なり、IME の変換キーも含めた入力したキー
 #   そのものを記録する。このため、キーボードマクロ記録時や再生時、IMEの状態に留意した
@@ -37,52 +26,14 @@ from keyhac import *
 
 def configure(keymap):
 
-    # emacs のキーバインドに"したくない"アプリケーションソフトを指定する（False を返す）
-    # keyhac のメニューから「内部ログ」を ON にすると processname や classname を確認することができます
-    def is_emacs_target(window):
-        if window.getProcessName() in ("cmd.exe",            # cmd
-                                       "mintty.exe",         # mintty
-                                       "emacs.exe",          # Emacs
-                                       "runemacs.exe",       # Emacs
-                                       "gvim.exe",           # GVim
-                                       # "eclipse.exe",        # Eclipse
-                                       "xyzzy.exe",          # xyzzy
-                                       "VirtualBox.exe",     # VirtualBox
-                                       "XWin.exe",           # Cygwin/X
-                                       "Xming.exe",          # Xming
-                                       "putty.exe",          # PuTTY
-                                       "ttermpro.exe",       # TeraTerm
-                                       "MobaXterm.exe",      # MobaXterm
-                                       "TurboVNC.exe",       # TurboVNC
-                                       "vncviewer.exe"):     # UltraVNC
-            return False
-        return True
-
-    # input method の切り替え"のみをしたい"アプリケーションソフトを指定する（True を返す）
-    # 指定できるアプリケーションソフトは、is_emacs_target で除外指定したものからのみとする
-    def is_im_target(window):
-        if window.getProcessName() in ("cmd.exe",            # cmd
-                                       "mintty.exe",         # mintty
-                                       "gvim.exe",           # GVim
-                                       # "eclipse.exe",        # Eclipse
-                                       "xyzzy.exe",          # xyzzy
-                                       "putty.exe",          # PuTTY
-                                       "ttermpro.exe",       # TeraTerm
-                                       "MobaXterm.exe"):     # MobaXterm
-            return True
-        return False
-
-    keymap_emacs = keymap.defineWindowKeymap(check_func=is_emacs_target)
-    keymap_im    = keymap.defineWindowKeymap(check_func=is_im_target)
+    # すべてのアプリケーションが対象
+    keymap_emacs = keymap.defineWindowKeymap()
 
     # mark がセットされると True になる
     keymap_emacs.is_marked = False
 
     # 検索が開始されると True になる
     keymap_emacs.is_searching = False
-
-    # キーボードマクロの play 中 は True になる
-    keymap_emacs.is_playing_kmacro = False
 
     # universal-argument コマンドが実行されると True になる
     keymap_emacs.is_universal_argument = False
@@ -99,18 +50,6 @@ def configure(keymap):
 
     def toggle_input_method():
         keymap.InputKeyCommand("A-(25)")()
-        if 1:
-            if keymap_emacs.is_playing_kmacro == False:
-                sleep(0.05) # delay
-
-                # IME の状態を取得する
-                if keymap.wnd.getImeStatus():
-                    message = "[あ]"
-                else:
-                    message = "[A]"
-
-                # IMEの状態をバルーンヘルプで表示する
-                keymap.popBalloon("ime_status", message, 500)
 
     ########################################################################
     ## ファイル操作
@@ -155,9 +94,6 @@ def configure(keymap):
 
     def move_end_of_line():
         keymap.InputKeyCommand("End")()
-        if keymap.getWindow().getClassName() == "_WwG": # Microsoft Word
-            if keymap_emacs.is_marked:
-                keymap.InputKeyCommand("Left")()
 
     def beginning_of_buffer():
         keymap.InputKeyCommand("C-Home")()
@@ -170,12 +106,6 @@ def configure(keymap):
 
     def scroll_down():
         keymap.InputKeyCommand("PageDown")()
-
-    def recenter():
-        if keymap.getWindow().getClassName() == "EditorClient": # Sakura Editor
-            keymap.InputKeyCommand("C-h")()
-        elif keymap.getWindow().getProcessName() == "chrome.exe": # Google Chrome
-            keymap.InputKeyCommand("C-l")()
 
     ########################################################################
     ## カット / コピー / 削除 / アンドゥ
@@ -203,15 +133,10 @@ def configure(keymap):
             kill_line()
         else:
             keymap_emacs.is_marked = True
-            if keymap.getWindow().getClassName() == "_WwG": # Microsoft Word
-                for i in range(keymap_emacs.repeat_counter):
-                    mark(next_line)()
-                mark(move_beginning_of_line)()
-            else:
-                for i in range(keymap_emacs.repeat_counter - 1):
-                    mark(next_line)()
-                mark(move_end_of_line)()
-                mark(forward_char)()
+            for i in range(keymap_emacs.repeat_counter - 1):
+                mark(next_line)()
+            mark(move_end_of_line)()
+            mark(forward_char)()
             kill_region()
 
     def kill_region():
@@ -219,10 +144,7 @@ def configure(keymap):
 
     def kill_ring_save():
         keymap.InputKeyCommand("C-c")()
-        if not keymap.getWindow().getClassName().startswith("EXCEL"): # Microsoft Excel 以外
-            # 選択されているリージョンのハイライトを解除するために Esc を発行しているが、
-            # アプリケーションソフトによっては効果なし
-            keymap.InputKeyCommand("Esc")()
+        keymap.InputKeyCommand("Esc")()
 
     def windows_copy():
         keymap.InputKeyCommand("C-c")()
@@ -297,41 +219,6 @@ def configure(keymap):
         else:
             keymap.InputKeyCommand("C-f")()
             keymap_emacs.is_searching = True
-
-    ########################################################################
-    ## キーボードマクロ
-    ########################################################################
-
-    def kmacro_start_macro():
-        keymap.command_RecordStart()
-
-    def kmacro_end_macro():
-        keymap.command_RecordStop()
-        # キーボードマクロの終了キー C-x ) の C-x がマクロに記録されてしまうのを削除する
-        # キーボードマクロの終了キーの前提を C-x ) としていることについては、とりえず了承ください
-        if len(keymap.record_seq) >= 4:
-            if (((keymap.record_seq[len(keymap.record_seq) - 1] == (162, True) and   # U-LCtrl
-                  keymap.record_seq[len(keymap.record_seq) - 2] == ( 88, True)) or   # U-X
-                 (keymap.record_seq[len(keymap.record_seq) - 1] == ( 88, True) and   # U-X
-                  keymap.record_seq[len(keymap.record_seq) - 2] == (162, True))) and # U-LCtrl
-                keymap.record_seq[len(keymap.record_seq) - 3] == (88, False)):       # D-X
-                   keymap.record_seq.pop()
-                   keymap.record_seq.pop()
-                   keymap.record_seq.pop()
-                   if keymap.record_seq[len(keymap.record_seq) - 1] == (162, False): # D-LCtrl
-                       for i in range(len(keymap.record_seq) - 1, -1, -1):
-                           if keymap.record_seq[i] == (162, False): # D-LCtrl
-                               keymap.record_seq.pop()
-                           else:
-                               break
-                   else:
-                       # コントロール系の入力が連続して行われる場合があるための対処
-                       keymap.record_seq.append((162, True)) # U-LCtrl
-
-    def kmacro_end_and_call_macro():
-        keymap_emacs.is_playing_kmacro = True
-        keymap.command_RecordPlay()
-        keymap_emacs.is_playing_kmacro = False
 
     ########################################################################
     ## その他
@@ -458,15 +345,6 @@ def configure(keymap):
     keymap_emacs["LC-x"]           = keymap.defineMultiStrokeKeymap("C-x")
     keymap_emacs["LC-q"]           = keymap.defineMultiStrokeKeymap("C-q")
 
-    ## 0-9キーの設定
-    ## for key in range(10):
-    ##     keymap_emacs[        str(key)]           = digit(key)
-    ##     keymap_emacs["LC-" + str(key)]           = digit2(key)
-    ##     keymap_emacs["LA-" + str(key)]           = digit2(key)
-    ##     keymap_emacs["Esc"][ str(key)]           = digit2(key)
-    ##     keymap_emacs["LC-OpenBracket"][str(key)] = digit2(key)
-    ##     keymap_emacs["S-" + str(key)] = reset_counter(reset_mark(repeat(self_insert_command("S-" + str(key)))))
-
     ## SPACE, A-Zキーの設定
     for vkey in [32] + list(range(65, 90 + 1)):
         keymap_emacs[  "(" + str(vkey) + ")"] = reset_counter(reset_mark(repeat(self_insert_command(  "(" + str(vkey) + ")"))))
@@ -501,14 +379,7 @@ def configure(keymap):
     keymap_emacs["(243)"]   = toggle_input_method
     keymap_emacs["(244)"]   = toggle_input_method
     keymap_emacs["LA-(25)"] = toggle_input_method
-    # keymap_emacs["LC-Yen"]  = toggle_input_method
     keymap_emacs["LC-o"]    = open_line
-
-    keymap_im["(243)"]   = toggle_input_method
-    keymap_im["(244)"]   = toggle_input_method
-    keymap_im["LA-(25)"] = toggle_input_method
-    # keymap_im["LC-Yen"]  = toggle_input_method
-    keymap_im["LC-o"]    = toggle_input_method
 
     ## 「ファイル操作」のキー設定
     keymap_emacs["LC-x"]["C-f"] = reset_search(reset_counter(reset_mark(find_file)))
@@ -546,7 +417,6 @@ def configure(keymap):
     keymap_emacs["LC-OpenBracket"]["v"] = reset_search(reset_counter(mark(scroll_up)))
 
     keymap_emacs["LC-v"] = reset_search(reset_counter(mark(scroll_down)))
-    keymap_emacs["LC-l"] = reset_search(reset_counter(recenter))
 
     ## 「カット / コピー / 削除 / アンドゥ」のキー設定
     keymap_emacs["LC-h"]    = reset_search(reset_counter(reset_mark(repeat2(delete_backward_char))))
@@ -594,18 +464,6 @@ def configure(keymap):
     keymap_emacs["LC-s"] = reset_counter(reset_mark(isearch_forward))
     keymap_emacs["LA-x"] = replace
 
-    ## 「キーボードマクロ」のキー設定
-    if 1:
-        # 日本語キーボードの場合
-        keymap_emacs["LC-x"]["S-8"] = kmacro_start_macro
-        keymap_emacs["LC-x"]["S-9"] = kmacro_end_macro
-    else:
-        # 英語キーボードの場合
-        keymap_emacs["LC-x"]["S-9"] = kmacro_start_macro
-        keymap_emacs["LC-x"]["S-0"] = kmacro_end_macro
-
-    keymap_emacs["LC-x"]["e"] = reset_search(reset_counter(repeat(kmacro_end_and_call_macro)))
-
     ## 「その他」のキー設定
     keymap_emacs["LC-m"]        = reset_counter(reset_mark(repeat(newline)))
     keymap_emacs["Enter"]       = reset_counter(reset_mark(repeat(newline)))
@@ -621,14 +479,3 @@ def configure(keymap):
         keymap_excel = keymap.defineWindowKeymap(class_name='EXCEL*')
         # C-Enter 押下で、「セル編集モード」に移行する
         keymap_excel["LC-Enter"] = reset_search(reset_counter(reset_mark(self_insert_command("F2"))))
-
-    ## Emacs のキー設定（オプション）
-    # if 0:
-    #     keymap_real_emacs = keymap.defineWindowKeymap(class_name='Emacs')
-    #     # IME 切り替え用のキーを C-\ に置き換える
-    #     keymap_real_emacs["(28)"]    = self_insert_command("C-Yen") # 「変換」キー
-    #     keymap_real_emacs["(29)"]    = self_insert_command("C-Yen") # 「無変換」キー
-    #     keymap_real_emacs["(242)"]   = self_insert_command("C-Yen") # 「カタカナ・ひらがな」キー
-    #     keymap_real_emacs["(243)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
-    #     keymap_real_emacs["(244)"]   = self_insert_command("C-Yen") # 「半角／全角」キー
-    #     keymap_real_emacs["LA-(25)"] = self_insert_command("C-Yen") # 「Alt-`」 キー
