@@ -35,12 +35,6 @@ def configure(keymap):
     # 検索が開始されると True になる
     keymap_emacs.is_searching = False
 
-    # universal-argument コマンドが実行されると True になる
-    keymap_emacs.is_universal_argument = False
-
-    # digit-argument コマンドが実行されると True になる
-    keymap_emacs.is_digit_argument = False
-
     # コマンドのリピート回数を設定する
     keymap_emacs.repeat_counter = 1
 
@@ -255,23 +249,6 @@ def configure(keymap):
     def kill_emacs():
         keymap.InputKeyCommand("A-F4")()
 
-    def universal_argument():
-        if keymap_emacs.is_universal_argument == True:
-            if keymap_emacs.is_digit_argument == True:
-                keymap_emacs.is_universal_argument = False
-            else:
-                keymap_emacs.repeat_counter = keymap_emacs.repeat_counter * 4
-        else:
-            keymap_emacs.is_universal_argument = True
-            keymap_emacs.repeat_counter = keymap_emacs.repeat_counter * 4
-
-    def digit_argument(number):
-        if keymap_emacs.is_digit_argument == True:
-            keymap_emacs.repeat_counter = keymap_emacs.repeat_counter * 10 + number
-        else:
-            keymap_emacs.repeat_counter = number
-            keymap_emacs.is_digit_argument = True
-
     def clipboard_list():
         keymap_emacs.is_marked = False
         keymap.command_ClipboardList()
@@ -282,20 +259,6 @@ def configure(keymap):
 
     def self_insert_command(key):
         return keymap.InputKeyCommand(key)
-
-    def digit(number):
-        def _digit():
-            if keymap_emacs.is_universal_argument == True:
-                digit_argument(number)
-            else:
-                reset_counter(reset_mark(repeat(keymap.InputKeyCommand(str(number)))))()
-        return _digit
-
-    def digit2(number):
-        def _digit2():
-            keymap_emacs.is_universal_argument = True
-            digit_argument(number)
-        return _digit2
 
     def mark(func):
         def _mark():
@@ -318,8 +281,6 @@ def configure(keymap):
     def reset_counter(func):
         def _reset_counter():
             func()
-            keymap_emacs.is_universal_argument = False
-            keymap_emacs.is_digit_argument = False
             keymap_emacs.repeat_counter = 1
         return _reset_counter
 
@@ -348,14 +309,10 @@ def configure(keymap):
     ## キーバインド
     ########################################################################
 
-    # http://homepage3.nifty.com/ic/help/rmfunc/vkey.htm
     # http://www.azaelia.net/factory/vk.html
 
     ## マルチストロークキーの設定
-    keymap_emacs["Esc"]            = keymap.defineMultiStrokeKeymap("Esc")
-    keymap_emacs["LC-OpenBracket"] = keymap.defineMultiStrokeKeymap("C-OpenBracket")
     keymap_emacs["LC-x"]           = keymap.defineMultiStrokeKeymap("C-x")
-    keymap_emacs["LC-q"]           = keymap.defineMultiStrokeKeymap("C-q")
 
     ## SPACE, A-Zキーの設定
     for vkey in [32] + list(range(65, 90 + 1)):
@@ -370,22 +327,6 @@ def configure(keymap):
     for vkey in list(range(186, 192 + 1)) + list(range(219, 222 + 1)) + [226]:
         keymap_emacs[  "(" + str(vkey) + ")"] = reset_counter(reset_mark(repeat(self_insert_command(  "(" + str(vkey) + ")"))))
         keymap_emacs["S-(" + str(vkey) + ")"] = reset_counter(reset_mark(repeat(self_insert_command("S-(" + str(vkey) + ")"))))
-
-    ## quoted-insertキーの設定
-    for vkey in range(1, 255):
-        keymap_emacs["LC-q"][  "("   + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command(  "("   + str(vkey) + ")")))))
-        keymap_emacs["LC-q"]["S-("   + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command("S-("   + str(vkey) + ")")))))
-        keymap_emacs["LC-q"]["C-("   + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command("C-("   + str(vkey) + ")")))))
-        keymap_emacs["LC-q"]["C-S-(" + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command("C-S-(" + str(vkey) + ")")))))
-        keymap_emacs["LC-q"]["A-("   + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command("A-("   + str(vkey) + ")")))))
-        keymap_emacs["LC-q"]["A-S-(" + str(vkey) + ")"] = reset_search(reset_counter(reset_mark(repeat(self_insert_command("A-S-(" + str(vkey) + ")")))))
-
-    ## Esc の二回押しを Esc とする設定
-    keymap_emacs["Esc"]["Esc"]                      = reset_counter(self_insert_command("Esc"))
-    keymap_emacs["LC-OpenBracket"]["C-OpenBracket"] = reset_counter(self_insert_command("Esc"))
-
-    ## universal-argumentキーの設定
-    keymap_emacs["LC-u"] = universal_argument
 
     keymap_emacs["LC-o"]    = open_line
 
@@ -404,12 +345,8 @@ def configure(keymap):
     keymap_emacs["LC-f"] = reset_search(reset_counter(repeat(mark(forward_char))))
 
     keymap_emacs["LA-b"]                = reset_search(reset_counter(repeat(mark(backward_word))))
-    keymap_emacs["Esc"]["b"]            = reset_search(reset_counter(repeat(mark(backward_word))))
-    keymap_emacs["LC-OpenBracket"]["b"] = reset_search(reset_counter(repeat(mark(backward_word))))
 
     keymap_emacs["LA-f"]                = reset_search(reset_counter(repeat(mark(forward_word))))
-    keymap_emacs["Esc"]["f"]            = reset_search(reset_counter(repeat(mark(forward_word))))
-    keymap_emacs["LC-OpenBracket"]["f"] = reset_search(reset_counter(repeat(mark(forward_word))))
 
     keymap_emacs["LC-p"] = reset_search(reset_counter(repeat(mark(previous_line))))
     keymap_emacs["LC-n"] = reset_search(reset_counter(repeat(mark(next_line))))
@@ -417,16 +354,10 @@ def configure(keymap):
     keymap_emacs["LC-e"] = reset_search(reset_counter(mark(move_end_of_line)))
 
     keymap_emacs["LA-S-Comma"]                 = reset_search(reset_counter(mark(beginning_of_buffer)))
-    keymap_emacs["Esc"]["S-Comma"]             = reset_search(reset_counter(mark(beginning_of_buffer)))
-    keymap_emacs["LC-OpenBracket"]["S-Comma"]  = reset_search(reset_counter(mark(beginning_of_buffer)))
 
     keymap_emacs["LA-S-Period"]                = reset_search(reset_counter(mark(end_of_buffer)))
-    keymap_emacs["Esc"]["S-Period"]            = reset_search(reset_counter(mark(end_of_buffer)))
-    keymap_emacs["LC-OpenBracket"]["S-Period"] = reset_search(reset_counter(mark(end_of_buffer)))
 
     keymap_emacs["LA-v"]                = reset_search(reset_counter(mark(scroll_up)))
-    keymap_emacs["Esc"]["v"]            = reset_search(reset_counter(mark(scroll_up)))
-    keymap_emacs["LC-OpenBracket"]["v"] = reset_search(reset_counter(mark(scroll_up)))
 
     keymap_emacs["LC-v"] = reset_search(reset_counter(mark(scroll_down)))
 
@@ -436,31 +367,22 @@ def configure(keymap):
     keymap_emacs["LC-Back"] = reset_search(reset_counter(reset_mark(repeat(backward_kill_word))))
 
     keymap_emacs["LA-Delete"]                = reset_search(reset_counter(reset_mark(repeat(backward_kill_word))))
-    keymap_emacs["Esc"]["Delete"]            = reset_search(reset_counter(reset_mark(repeat(backward_kill_word))))
-    keymap_emacs["LC-OpenBracket"]["Delete"] = reset_search(reset_counter(reset_mark(repeat(backward_kill_word))))
 
     keymap_emacs["LC-Delete"] = reset_search(reset_counter(reset_mark(repeat(kill_word))))
 
     keymap_emacs["LA-d"]                = reset_search(reset_counter(reset_mark(repeat(kill_word))))
-    keymap_emacs["Esc"]["d"]            = reset_search(reset_counter(reset_mark(repeat(kill_word))))
-    keymap_emacs["LC-OpenBracket"]["d"] = reset_search(reset_counter(reset_mark(repeat(kill_word))))
 
     keymap_emacs["LC-k"] = reset_search(reset_counter(reset_mark(kill_line2)))
     keymap_emacs["LC-w"] = reset_search(reset_counter(reset_mark(kill_region)))
 
     keymap_emacs["LA-w"]                = reset_search(reset_counter(reset_mark(kill_ring_save)))
-    keymap_emacs["Esc"]["w"]            = reset_search(reset_counter(reset_mark(kill_ring_save)))
-    keymap_emacs["LC-OpenBracket"]["w"] = reset_search(reset_counter(reset_mark(kill_ring_save)))
 
     keymap_emacs["LC-c"]          = reset_search(reset_counter(reset_mark(windows_copy)))
     keymap_emacs["LC-y"]          = reset_search(reset_counter(reset_mark(yank)))
     keymap_emacs["LC-z"]          = reset_search(reset_counter(reset_mark(undo)))
-    # keymap_emacs["LC-Slash"]      = reset_search(reset_counter(reset_mark(undo)))
     keymap_emacs["LC-Underscore"] = reset_search(reset_counter(reset_mark(undo)))
     keymap_emacs["LC-x"]["u"]     = reset_search(reset_counter(reset_mark(undo)))
 
-    # LC-Atmark とすると英語キーボードで LC-2 が横取りされるので、LC-(192) としている
-    # keymap_emacs["LC-(192)"] = reset_search(reset_counter(set_mark_command))
     keymap_emacs["LC-Space"] = reset_search(reset_counter(set_mark_command))
 
     keymap_emacs["LC-x"]["h"]   = reset_search(reset_counter(reset_mark(mark_whole_buffer)))
@@ -485,9 +407,3 @@ def configure(keymap):
     keymap_emacs["LC-g"]        = reset_search(reset_counter(reset_mark(keybord_quit)))
     keymap_emacs["LC-x"]["C-c"] = reset_search(reset_counter(reset_mark(kill_emacs)))
     keymap_emacs["LC-x"]["C-y"] = reset_search(reset_counter(reset_mark(clipboard_list)))
-
-    ## Excel のキー設定（オプション）
-    if 1:
-        keymap_excel = keymap.defineWindowKeymap(class_name='EXCEL*')
-        # C-Enter 押下で、「セル編集モード」に移行する
-        keymap_excel["LC-Enter"] = reset_search(reset_counter(reset_mark(self_insert_command("F2"))))
