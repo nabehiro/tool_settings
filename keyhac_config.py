@@ -48,8 +48,20 @@ def configure(keymap):
     ## IMEの切替え
     ########################################################################
 
+    def enable_input_method():
+        setImeStatus(1)
+
+    def disable_input_method():
+        setImeStatus(0)
+
     def toggle_input_method():
-        keymap.InputKeyCommand("A-(25)")()
+        setImeStatus(keymap.getWindow().getImeStatus() ^ 1)
+
+    def setImeStatus(ime_status):
+        if keymap.getWindow().getImeStatus() != ime_status:
+            # IME を 切り替える
+            # （ keymap.getWindow().setImeStatus(ime_status) を使わないのは、キーボードマクロの再生時に影響がでるため）
+            self_insert_command("A-(25)")()
 
     ########################################################################
     ## ファイル操作
@@ -375,11 +387,11 @@ def configure(keymap):
     ## universal-argumentキーの設定
     keymap_emacs["LC-u"] = universal_argument
 
-    ## 「IMEの切替え」のキー設定
-    keymap_emacs["(243)"]   = toggle_input_method
-    keymap_emacs["(244)"]   = toggle_input_method
-    keymap_emacs["LA-(25)"] = toggle_input_method
     keymap_emacs["LC-o"]    = open_line
+
+    ## 「IMEの切替え」のキー設定
+    keymap_emacs["(29)"] = disable_input_method
+    keymap_emacs["(28)"] = enable_input_method
 
     ## 「ファイル操作」のキー設定
     keymap_emacs["LC-x"]["C-f"] = reset_search(reset_counter(reset_mark(find_file)))
