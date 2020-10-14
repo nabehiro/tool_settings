@@ -1,148 +1,144 @@
-#################################################
-# https://qiita.com/d-dai/items/d7f329b7d82e2165dab3
-# より作成
-#################################################
-
-# Ctrl+Dでログアウトしてしまうことを防ぐ
-setopt IGNOREEOF
-
-# 日本語を使用
-export LANG=ja_JP.UTF-8
-
-# パスを追加したい場合
 export PATH="$HOME/bin:$PATH"
 
-# 色を使用
-autoload -Uz colors
-colors
-
-# 補完
-autoload -Uz compinit
-compinit
-
-# emacsキーバインド
-bindkey -e
-
-# 他のターミナルとヒストリーを共有
-setopt share_history
-
-# ヒストリーに重複を表示しない
-setopt histignorealldups
-
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-
-# cdコマンドを省略して、ディレクトリ名のみの入力で移動
+#----------------------------------------------------------------------
+# general
+#----------------------------------------------------------------------
+# auto change directory
 setopt auto_cd
 
-# 自動でpushdを実行
+# auto directory pushd that you can get dirs list by cd -[tab]
 setopt auto_pushd
 
-# pushdから重複を削除
-setopt pushd_ignore_dups
-
-# コマンドミスを修正
+# command correct edition before each completion attempt
 setopt correct
 
+# compacked complete list display
+setopt list_packed
 
-# グローバルエイリアス
-alias -g L='| less'
-alias -g H='| head'
-alias -g G='| grep'
-alias -g GI='| grep -ri'
+# no remove postfix slash of command line
+setopt noautoremoveslash
 
+# no beep sound when complete list displayed
+setopt nolistbeep
 
-# エイリアス
-alias lst='ls -ltr --color=auto'
-alias l='ls -ltr --color=auto'
-alias la='ls -la --color=auto'
-alias ll='ls -l --color=auto'
-alias so='source'
-alias v='vim'
-alias vi='vim'
-alias vz='vim ~/.zshrc'
-alias c='cdr'
-# historyに日付を表示
-alias h='fc -lt '%F %T' 1'
-alias cp='cp -i'
-alias rm='rm -i'
-alias mkdir='mkdir -p'
-alias ..='c ../'
-alias back='pushd'
-alias diff='diff -U1'
+# emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes to end of it)
+bindkey -e
 
-# backspace,deleteキーを使えるように
-stty erase ^H
-bindkey "^[[3~" delete-char
+# load colors
+autoload -U colors; colors
 
-# cdの後にlsを実行
-chpwd() { ls -ltr --color=auto }
-
-# どこからでも参照できるディレクトリパス
-cdpath=(~)
-
-# 区切り文字の設定
-autoload -Uz select-word-style
-select-word-style default
-zstyle ':zle:*' word-chars "_-./;@"
-zstyle ':zle:*' word-style unspecified
-
-# Ctrl+sのロック, Ctrl+qのロック解除を無効にする
-setopt no_flow_control
-
-# プロンプトを2行で表示、時刻を表示
-PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-%# "
-
-# 補完後、メニュー選択モードになり左右キーで移動が出来る
-zstyle ':completion:*:default' menu select=2
-
-# 補完で大文字にもマッチ
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# Ctrl+rでヒストリーのインクリメンタルサーチ、Ctrl+sで逆順
-bindkey '^r' history-incremental-pattern-search-backward
-bindkey '^s' history-incremental-pattern-search-forward
-
-# コマンドを途中まで入力後、historyから絞り込み
-# 例 ls まで打ってCtrl+pでlsコマンドをさかのぼる、Ctrl+bで逆順
-autoload -Uz history-search-end
+#----------------------------------------------------------------------
+# historical backward/forward search with linehead string binded to ^P/^N
+#----------------------------------------------------------------------
+autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
-bindkey "^b" history-beginning-search-forward-end
+bindkey "^n" history-beginning-search-forward-end
+bindkey "\\ep" history-beginning-search-backward-end
+bindkey "\\en" history-beginning-search-forward-end
 
-# cdrコマンドを有効 ログアウトしても有効なディレクトリ履歴
-# cdr タブでリストを表示
-autoload -Uz add-zsh-hook
-autoload -Uz chpwd_recent_dirs cdr
-add-zsh-hook chpwd chpwd_recent_dirs
-# cdrコマンドで履歴にないディレクトリにも移動可能に
-zstyle ":chpwd:*" recent-dirs-default true
+#----------------------------------------------------------------------
+# Command history configuration
+#----------------------------------------------------------------------
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt hist_ignore_dups # ignore duplication command history list
+setopt share_history # share command history data
 
-# 複数ファイルのmv 例　zmv *.txt *.txt.bk
-autoload -Uz zmv
-alias zmv='noglob zmv -W'
+#----------------------------------------------------------------------
+# Completion configuration
+#----------------------------------------------------------------------
+fpath=(${HOME}/.zsh/functions/Completion ${fpath})
+autoload -U compinit promptinit
+compinit
+zstyle ':completion::complete:*' use-cache true
+#zstyle ':completion:*:default' menu select true
+zstyle ':completion:*:default' menu select=1
+# ignore case
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# use completion color
+zstyle ':completion:*' list-colors "${LS_COLORS}"
+# kill
+# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
+# sudo
+#zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
-# mkdirとcdを同時実行
-function mkcd() {
-  if [[ -d $1 ]]; then
-    echo "$1 already exists!"
-    cd $1
-  else
-    mkdir -p $1 && cd $1
-  fi
+#----------------------------------------------------------------------
+# Alias configuration
+#----------------------------------------------------------------------
+# expand aliases before completing
+setopt complete_aliases # aliased ls needs if file/dir completions work
+
+
+
+
+#----------------------------------------------------------------------
+# set terminal title including current directory
+#----------------------------------------------------------------------
+precmd() {
+    echo -ne "\033]0;${PWD}\007"
 }
 
-# git設定
-RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
-autoload -Uz vcs_info
+#----------------------------------------------------------------------
+# Prediction configuration
+#----------------------------------------------------------------------
+#autoload predict-on
+#predict-on
+
+
+#----------------------------------------------------------------------
+# Show branch name in Zsh's right prompt
+#----------------------------------------------------------------------
+function rprompt-git-current-branch {
+        local name st color
+
+        if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
+                return
+        fi
+        name=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
+        if [[ -z $name ]]; then
+                return
+        fi
+        st=`git status 2> /dev/null`
+        if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
+                color=${fg[green]}
+        elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
+                color=${fg[yellow]}
+        elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
+                color=${fg_bold[red]}
+        else
+                color=${fg[red]}
+        fi
+
+        # %{...%} は囲まれた文字列がエスケープシーケンスであることを明示する
+        # これをしないと右プロンプトの位置がずれる
+        echo "%{$color%}$name%{$reset_color%} "
+}
+
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
 setopt prompt_subst
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
-zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () { vcs_info }
-RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
+
+RPROMPT='[`rprompt-git-current-branch`%~]'
+
+#----------------------------------------------------------------------
+# Prompt color
+#----------------------------------------------------------------------
+# PROMPT="%{${fg[blue]}%}[%n@%m:%1~] %(!.#.$) %{${reset_color}%}"
+# PROMPT="%1~ %(!.#.$) %{${reset_color}%}"
+PROMPT="%{${fg_bold[red]}%}→ %{${fg_no_bold[cyan]}%}%1~ %{${reset_color}%}"
+PROMPT2="%{${fg[blue]}%}%_> %{${reset_color}%}"
+SPROMPT="%{${fg[red]}%}correct: %R -> %r [n,y,a,e]? %{${reset_color}%}"
+# RPROMPT="%{${fg[green]}%}[%~]%{${reset_color}%}"
+
+#----------------------------------------------------------------------
+# zsh editor
+#----------------------------------------------------------------------
+# http://opensource.apple.com/source/zsh/zsh-34/zsh/Functions/Misc/zcalc
+autoload -U zcalc
+
+autoload -U zed && zed -b
+# fix up down keybind in zed (https://sites.google.com/site/codehen/environment/zsh)
+bindkey -M zed "^P" up-line-or-search
+bindkey -M zed "^N" down-line-or-search
