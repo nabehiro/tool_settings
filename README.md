@@ -2,8 +2,10 @@
 - Listary
 - 7zip
 - ~~ConEmu~~
-- terminal
+- Terminal
+- Cascadia Code PL
 - posh-git
+  - [Beautify your Windows Terminal](https://dev.to/anupa/beautify-your-windows-terminal-1la8)   
 - WinMerge
 - GrepWin
 - keyhac
