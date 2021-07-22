@@ -4,7 +4,7 @@ run `crontab -e`, so add cron schedules.
 
 - 06:30 on weekday: record basic english 3
 - 21:30 on weekday: record basic english 3
-- 00:00 everyday: delete old files
+- 00:00 on everyday: delete old files
 - 09:10 on weekday: record enjoy simple english
 - 16:25 on weekday: record enjoy simple english
 
