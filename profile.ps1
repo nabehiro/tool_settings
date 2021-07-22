@@ -1,3 +1,7 @@
+# enable posh-git prompt on oh-my-posh.
+# https://ohmyposh.dev/docs/poshgit
+$env:POSH_GIT_ENABLED = $true
+
 Import-Module posh-git
 Import-Module oh-my-posh
 
