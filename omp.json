@@ -6,11 +6,19 @@
       "alignment": "left",
       "segments": [
         {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#C591E8",
+          "properties": {
+            "prefix": "",
+            "text": "#"
+          }
+        },
+        {
           "type": "path",
           "style": "plain",
           "foreground": "#61AFEF",
           "properties": {
-            "prefix": "",
             "style": "full"
           }
         },
@@ -35,12 +43,10 @@
         {
           "type": "python",
           "style": "plain",
-          "foreground": "lightRed",
+          "foreground": "#007acc",
           "properties": {
             "display_virtual_env": true,
             "display_version": false,
-            "prefix": "[ ",
-            "postfix": " ]",
             "display_mode": "always"
           }
         },
@@ -62,12 +68,12 @@
         {
           "type": "exit",
           "style": "powerline",
-          "foreground": "lightGreen",
+          "foreground": "#69FF94",
           "properties": {
             "display_exit_code": false,
             "always_enabled": true,
             "error_color": "red",
-            "prefix": "\u279c"
+            "prefix": "\u276F"
           }
         }
       ]
