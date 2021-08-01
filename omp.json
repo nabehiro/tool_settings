@@ -6,12 +6,12 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "text",
+          "type": "time",
           "style": "plain",
           "foreground": "#C591E8",
           "properties": {
             "prefix": "",
-            "text": "#"
+            "time_format": "[15:04:05]"
           }
         },
         {
@@ -32,30 +32,6 @@
           "foreground": "#C94A16",
           "properties": {
             "prefix": "x"
-          }
-        }
-      ]
-    },
-    {
-      "type": "prompt",
-      "alignment": "right",
-      "segments": [
-        {
-          "type": "python",
-          "style": "plain",
-          "foreground": "#007acc",
-          "properties": {
-            "display_virtual_env": true,
-            "display_version": false,
-            "display_mode": "always"
-          }
-        },
-        {
-          "type": "time",
-          "style": "plain",
-          "foreground": "lightGreen",
-          "properties": {
-            "time_format": "15:04:05"
           }
         }
       ]
