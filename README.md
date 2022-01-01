@@ -1,9 +1,10 @@
 # tool settings
-- Listary
+- ~~Listary~~
+- Fluent-Search
 - 7zip
 - ~~ConEmu~~
-- Terminal
-- Cascadia Code PL
+- ~~Terminal~~
+- ~~Cascadia Code PL~~
 - posh-git
   - [Beautify your Windows Terminal](https://dev.to/anupa/beautify-your-windows-terminal-1la8)   
 - WinMerge
@@ -12,11 +13,12 @@
 - ~~Contexter (コンテキストメニュー)~~ 
 - ~~ChgKey (キーバインド)~~
 - SharpKeys
-- procexp
+- ~~procexp~~
 - node.js
-- anaconda
+- ~~anaconda~~
+- Python
 - git
 - Visual Studio
 - Visual Studio Code
 - Rufus
-- PowerToy
+- ~~PowerToy~~
