@@ -8,6 +8,8 @@ Import-Module oh-my-posh
 # use oirignal oh my posh config.
 Set-PoshPrompt -Theme ~/omp.json
 
+# install prerelease(2.2.0-beta4) PSReadLine
+# Install-Module -Name PSReadLine -AllowPrerelease -Force
 Import-Module PSReadLine
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
