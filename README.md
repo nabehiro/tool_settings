@@ -1,6 +1,6 @@
 # tool settings
-- ~~Listary~~
-- Fluent-Search
+- Listary 古いけどやっぱり一番使いやすい
+- ~~Fluent-Search~~ いまいちだった
 - 7zip
 - ~~ConEmu~~
 - ~~Terminal~~
@@ -21,4 +21,6 @@
 - Visual Studio
 - Visual Studio Code
 - Rufus
-- ~~PowerToy~~
+- ~~PowerToy~~ Win11 だと動作が不安定だし不要
+- DevToy
+- Line
