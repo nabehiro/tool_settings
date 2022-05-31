@@ -1,8 +1,11 @@
 # tool settings
 - Listary 6 beta (Channing is back!)
 - 7zip
-- oh-my-posh
-  - [Windows Terminal Custom Prompt Setup \| Microsoft Docs](https://docs.microsoft.com/en-us/windows/terminal/tutorials/custom-prompt-setup)
+- Customize Terminal
+  - oh-my-posh  
+    [Windows Terminal Custom Prompt Setup \| Microsoft Docs](https://docs.microsoft.com/en-us/windows/terminal/tutorials/custom-prompt-setup)
+  - Terminal-Icons  
+    [devblackops/Terminal\-Icons: A PowerShell module to show file and folder icons in the terminal](https://github.com/devblackops/Terminal-Icons)
 - WinMerge
 - GrepWin
 - keyhac
