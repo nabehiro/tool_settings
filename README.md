@@ -1,17 +1,11 @@
 # tool settings
-- Listary 古いけどやっぱり一番使いやすい
-- ~~Fluent-Search~~ いまいちだった
+- Listary 6 beta (Channing is back!)
 - 7zip
-- ~~ConEmu~~
-- ~~Terminal~~
-- ~~Cascadia Code PL~~
-- posh-git + Oh My Posh
-  - [Beautify your Windows Terminal](https://dev.to/anupa/beautify-your-windows-terminal-1la8)   
+- oh-my-posh
+  - [Windows Terminal Custom Prompt Setup \| Microsoft Docs](https://docs.microsoft.com/en-us/windows/terminal/tutorials/custom-prompt-setup)
 - WinMerge
 - GrepWin
 - keyhac
-- ~~Contexter (コンテキストメニュー)~~ 
-- ~~ChgKey (キーバインド)~~
 - SharpKeys
 - ~~procexp~~
 - node.js
@@ -21,6 +15,6 @@
 - Visual Studio
 - Visual Studio Code
 - Rufus
-- ~~PowerToy~~ Win11 だと動作が不安定だし不要
+- ~~PowerToy~~ Win11 だと動作が不安定だしそこまで必要ではない
 - DevToy
 - Line
