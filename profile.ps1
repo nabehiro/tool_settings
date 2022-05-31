@@ -1,15 +1,10 @@
-# enable posh-git prompt on oh-my-posh.
-# https://ohmyposh.dev/docs/poshgit
-$env:POSH_GIT_ENABLED = $true
+# https://ohmyposh.dev/docs/installation/windows
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\wopian.omp.json" | Invoke-Expression
 
-Import-Module posh-git
-Import-Module oh-my-posh
+# https://github.com/devblackops/Terminal-Icons
+Import-Module -Name Terminal-Icons
 
-# use oirignal oh my posh config.
-Set-PoshPrompt -Theme ~/omp.json
-
-# install prerelease(2.2.0-beta4) PSReadLine
-# Install-Module -Name PSReadLine -AllowPrerelease -Force
+# https://github.com/PowerShell/PSReadLine
 Import-Module PSReadLine
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
